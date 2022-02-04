@@ -1,0 +1,35 @@
+package com.countryservice.demo;
+
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
+
+@TestMethodOrder(OrderAnnotation.class)
+@SpringBootTest(classes = {ControllerIntegrationTests.class})
+public class ControllerIntegrationTests {
+	
+	
+	@Test
+	@Order(1)
+	void getAllCountriesIntegrationTest()
+	{
+		
+		
+		String expected = ""
+		
+		
+		TestRestTemplate restTemplate=new TestRestTemplate();
+		
+		ResponseEntity<String> response= restTemplate.getForEntity("http://localhost:8080/getcountries", String.class);  //Rest Template for specifying type of requests
+		System.out.println(response.getStatusCode());
+		System.out.println(response.getBody());
+	
+	}
+	
+	
+
+}

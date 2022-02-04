@@ -1,0 +1,95 @@
+package com.countryservice.demo;
+
+import org.junit.jupiter.api.TestMethodOrder;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import com.countryservice.demo.beans.Country;
+import com.countryservice.demo.controllers.CountryController;
+import com.countryservice.demo.services.CountryService;
+
+import net.bytebuddy.implementation.bytecode.ByteCodeAppender.Size;
+
+
+@TestMethodOrder(OrderAnnotation.class)
+@ComponentScan(basePackages = "com.countryservice.demo")
+@AutoConfigureMockMvc
+@ContextConfiguration
+@SpringBootTest(classes = {ControllerMockMvcTest.class})
+
+public class ControllerMockMvcTest {
+	
+	@Autowired
+	MockMvc mockMvc;
+	
+
+	@Mock
+	CountryService countryService;
+	
+	@InjectMocks
+	CountryController countryController;
+	
+	List<Country> mycountries;
+	Country country;
+	
+	@BeforeEach   //Execute b4 each class to specify the Controller class MockMvc will use to mock
+	public void setUp() {
+		
+		mockMvc=MockMvcBuilders.standaloneSetup(countryController).build();
+		
+	}
+	
+	
+	
+	@Test
+	@Order(1)
+	public void test_getAllCountries() throws Exception {
+		
+		
+		List<Country> mycountries= new ArrayList<Country>();
+		mycountries.add(new Country(1, "India", "Delhi"));
+		mycountries.add(new Country(2, "USA", "Washington"));
+		mycountries.add(new Country(3, "UK", "London"));
+		mycountries.add(new Country(4, "Austria", "Vienna"));
+		mycountries.add(new Country(5, "Germany", "Berlin"));
+		
+		when(countryService.getAllCountries()).thenReturn(mycountries); 
+		
+		this.mockMvc.perform(get("/getcountries"))
+			.andExpect(status().is2xxSuccessful());
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

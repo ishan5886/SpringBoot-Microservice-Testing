@@ -1,0 +1,21 @@
+package com.countryservice.demo;
+
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.ContextConfiguration;
+
+
+@TestMethodOrder(OrderAnnotation.class)
+@ComponentScan(basePackages = "com.countryservice.demo")
+@AutoConfigureMockMvc
+@ContextConfiguration
+@SpringBootTest(classes = {ControllerMockMvcTest.class})
+
+public class ControllerMockMvcTest {
+
+	
+	
+}
